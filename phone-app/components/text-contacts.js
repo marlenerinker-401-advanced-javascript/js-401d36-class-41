@@ -7,7 +7,7 @@ import * as Contacts from 'expo-contacts';
 
 
 
-export default function CallContacts() {
+export default function TextContacts() {
   const [contacts, setContacts] = useState([]);
   const [permissions, setPermissions] = useState(false);
   
@@ -21,10 +21,16 @@ export default function CallContacts() {
     setContacts(contactList.data);
   }
   
-  const call = (contact) => {
+  const text = (contact) => {
     console.log(contact);
     let phoneNumber = contact.phoneNumbers[0].digits;
-    let phoneLink = `tel:${phoneNumber}`;
+    for (let i = 0; i < contact.phoneNumbers.length; i++) {
+      if (contact.phoneNumbers[i].label === "mobile" || contact.phoneNumbers[i].label === "iPhone") {
+        phoneNumber = contact.phoneNumbers[i].digits;
+        break;
+      }
+    }
+    let phoneLink = `sms:${phoneNumber}`;
     Linking.canOpenURL(phoneLink)
       .then(isSupported => Linking.openURL(phoneLink))
       .catch(console.error);
@@ -36,19 +42,19 @@ export default function CallContacts() {
 
   return (
       <View style={styles.box1}>
-        <Text style={styles.heading}>Call Someone</Text>
+        <Text style={styles.heading}>Text Someone</Text>
         <Button color='#4db848'
           onPress={showContacts}
           title="Show Contacts"
         />
-        <FlatList
+        <FlatList 
           data={contacts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              <Button
+              <Button 
                 title={item.name}
-                onPress={() => call(item)}
+                onPress={() => text(item)}
               />
             )
           }}
@@ -69,5 +75,7 @@ const styles = StyleSheet.create({
   heading: {    
     color: 'red',
     fontSize: 20,
-  }
+  },
+
+  
 });
