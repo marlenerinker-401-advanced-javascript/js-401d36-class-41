@@ -17,3 +17,13 @@ Here's what you can do with it:
 - look at things using your camera
 
 - future: interact with your calendar
+
+## Published in Expo
+
+You'll need the Expo client to run this app on your phone.
+
+[Expo.io](https://expo.io/)
+
+[Link to Marlene's Little Phone App - Manifest URL](https://exp.host/@mrinker/phone-app)
+
+
