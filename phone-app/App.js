@@ -5,6 +5,9 @@ import CallContacts from './components/call-contacts.js';
 import TextContacts from './components/text-contacts.js';
 import UseCalendar from './components/calendar.js';
 import SeeBattery from './components/battery.js';
+import UseCamera from './components/camera.js';
+import { Provider } from 'react-redux';
+import store from './store';
 
 export default function App() {
 
@@ -20,12 +23,14 @@ export default function App() {
 
 
   return (
+    <Provider store={store}>
     <View style={styles.container}>
-      <Text style={styles.heading}>Welcome to Marlene's Cool Phone App</Text>
+      <Text style={styles.heading}>Marlene's Little Phone App</Text>
       <Button style={styles.taskButton} title='Make a Call' onPress={() => toggleAction('call')}/>
       <Button style={styles.taskButton} title='Send a Text' onPress={() => toggleAction('text')}/>
       <Button style={styles.taskButton} title='See Calendar' onPress={() => toggleAction('calendar')}/>
       <Button style={styles.taskButton} title='See Battery Level' onPress={() => toggleAction('battery')}/>
+      <Button style={styles.taskButton} title='Use Camera View' onPress={() => toggleAction('camera')}/>
       <If condition={task === 'call'}>
       <CallContacts />
       </If>
@@ -38,8 +43,12 @@ export default function App() {
       <If condition={task === 'battery'}>
       <SeeBattery />
       </If>
+      <If condition={task === 'camera'}>
+      <UseCamera />
+      </If>
       <StatusBar style="auto" />  
     </View>
+    </Provider>
   );
 }
 
@@ -56,10 +65,6 @@ const styles = StyleSheet.create({
   heading: {
     textAlign: 'center',
     color: '#6202ab',
-    fontSize: 20,    
+    fontSize: 30,    
   },
-
-  taskButton: {
-    flexWrap: 'wrap',
-  }
 });

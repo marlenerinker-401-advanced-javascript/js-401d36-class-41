@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Linking } from 'react-native'
 import * as Battery from 'expo-battery';
 
+const If = props => {
+  return props.condition ? props.children : null;
+};
+
 export default function seeBattery() {
   const [battery, setBattery] = useState([]);
   let _subscription = null;
@@ -16,10 +20,10 @@ export default function seeBattery() {
   
   const _subscribe = async () => {
     const batteryLevel = await Battery.getBatteryLevelAsync();
-    setBattery(batteryLevel);
-    console.log(batteryLevel);
+    let roundBattery = Math.round(batteryLevel * 100)
+    setBattery(roundBattery);
     _subscription = Battery.addBatteryLevelListener(({ batteryLevel }) => {
-      setBatteryLevel({ batteryLevel });
+      setBattery(Math.round(batteryLevel * 100));
       console.log('batteryLevel changed!', batteryLevel);
     });
   }
@@ -40,11 +44,28 @@ export default function seeBattery() {
     _subscription && _subscription.remove();
     _subscription = null;
   }
+
+  
   
 
   return (
       <View style={styles.box1}>
-        <Text>Current Battery Level: {battery}</Text>
+        <Text style={{alignSelf: 'center',
+          color: 'red',
+          fontSize: 30,
+          padding: 3,}} >Current Battery Level:</Text>
+          <If condition={battery >= 50}>
+        <Text style={{alignSelf: 'center',
+          color: 'green',
+          fontSize: 30,
+          padding: 3,}}>{battery} %</Text>
+          </If>
+          <If condition={battery < 50}>
+        <Text style={{alignSelf: 'center',
+          color: 'red',
+          fontSize: 30,
+          padding: 3,}}>{battery} %</Text>
+          </If>
       </View>
   );
 }
@@ -52,14 +73,11 @@ export default function seeBattery() {
 const styles = StyleSheet.create({
   box1: {
     flex: 0.7,
-    borderWidth: 2,
+    borderWidth: 5,
     borderColor: '#ff6502',
-    margin: 10,
-    width: '100%',
+    margin: 20,
+    width: '99%',
   },
 
-  heading: {    
-    color: 'red',
-    fontSize: 20,
-  }
+  
 });

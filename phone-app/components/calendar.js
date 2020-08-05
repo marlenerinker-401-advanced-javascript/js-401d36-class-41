@@ -27,7 +27,7 @@ export default function UseCalendar() {
 
   return (
     <View style={styles.box1}>
-      <Text>Calendar functionality is in development.</Text>
+      <Text style={styles.heading}>Calendar functionality is not available yet.</Text>
     </View>
   );
 
@@ -36,15 +36,17 @@ export default function UseCalendar() {
 const styles = StyleSheet.create({
   box1: {
     flex: 0.7,
-    borderWidth: 2,
+    borderWidth: 5,
     borderColor: '#ff6502',
     margin: 10,
-    width: '100%',
+    width: '99%%',
   },
 
   heading: {    
     color: 'red',
     fontSize: 20,
+    textAlign: 'center',
+    paddingTop: 3,
   },
 
   

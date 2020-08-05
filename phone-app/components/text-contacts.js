@@ -3,12 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, FlatList, Linking } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Contacts from 'expo-contacts';
+import { connect } from 'react-redux';
+import { fetchContacts } from '../store/contacts.js';
 
 
+const If = props => {
+  return props.condition ? props.children : null;
+};
 
-
-export default function TextContacts() {
-  const [contacts, setContacts] = useState([]);
+const TextContacts = (props) => {
+  // const [contacts, setContacts] = useState([]);
   const [permissions, setPermissions] = useState(false);
   
   const getPermissions = async () => {
@@ -16,10 +20,10 @@ export default function TextContacts() {
     setPermissions(status === 'granted' ? true : false);
   }
   
-  const showContacts = async () => {
-    const contactList = await Contacts.getContactsAsync();
-    setContacts(contactList.data);
-  }
+  // const showContacts = async () => {
+  //   const contactList = await Contacts.getContactsAsync();
+  //   setContacts(contactList.data);
+  // }
   
   const text = (contact) => {
     console.log(contact);
@@ -43,12 +47,14 @@ export default function TextContacts() {
   return (
       <View style={styles.box1}>
         <Text style={styles.heading}>Text Someone</Text>
+        <If condition={(props.contacts.length === 0)}>
         <Button color='#4db848'
-          onPress={showContacts}
+          onPress={() => {props.fetchContacts()}}
           title="Show Contacts"
         />
+        </If>
         <FlatList 
-          data={contacts}
+          data={props.contacts}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
@@ -66,16 +72,37 @@ export default function TextContacts() {
 const styles = StyleSheet.create({
   box1: {
     flex: 0.7,
-    borderWidth: 2,
+    borderWidth: 5,
     borderColor: '#ff6502',
-    margin: 10,
-    width: '100%',
+    margin: 20,
+    width: '99%',
   },
 
-  heading: {    
+  heading: {   
+    alignSelf: 'center',
     color: 'red',
-    fontSize: 20,
+    fontSize: 30,
+    padding: 3,
   },
 
   
 });
+
+const mapStateToProps = state => {
+  
+
+  return {
+    contacts: state.contacts,
+    
+  };
+};
+
+const mapDispatchToProps = { fetchContacts };
+
+
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TextContacts);
