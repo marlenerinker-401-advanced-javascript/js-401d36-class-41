@@ -14,4 +14,6 @@ Here's what you can do with it:
 
 - view your battery level
 
+- look at things using your camera
+
 - future: interact with your calendar
